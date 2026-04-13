@@ -1,0 +1,31 @@
+import pandas as pd
+import numpy as np
+import joblib
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.model_selection import train_test_split
+
+# 1. Load your data
+df = pd.read_excel("project_hr_dataset.xlsx")
+
+# 2. (Assuming you have already preprocessed your text into numbers here)
+# If you are using the 'preprocessor.pkl' we discussed, you'd apply it here:
+# X = preprocessor.fit_transform(df[['Department', 'Job_Level']])
+# For this example, let's assume X is your feature matrix and y is salary
+
+X = df[['Department_Encoded', 'Job_Level_Encoded']] # Replace with your actual numeric columns
+y = np.log(df['Salary_INR']) # Log-scaling as per your Streamlit app logic
+
+# 3. Initialize the Decision Tree
+model = DecisionTreeRegressor(
+    max_depth=None, 
+    min_samples_split=2, 
+    random_state=42
+)
+
+# 4. Train the model
+model.fit(X, y)
+
+# 5. Save the model to a .pkl file
+joblib.dump(model, 'model.pkl')
+
+print("✅ model.pkl has been created and saved!")
